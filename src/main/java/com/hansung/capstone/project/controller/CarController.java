@@ -31,4 +31,16 @@ public class CarController {
         }
 
     }
+
+    @GetMapping("/getCarsByUserLocation")
+    private Header<List<CarInfo>> getCarsByUserLocation(@RequestParam String id){
+        try{
+            List<CarInfo> carInfoList = carService.getCarsByUserLocation(id);
+
+            return Header.SUCCESS(carInfoList.size(), carInfoList);
+
+        }catch(Exception e){
+            return Header.FAIL();
+        }
+    }
 }

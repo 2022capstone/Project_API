@@ -11,4 +11,6 @@ public interface CarService {
 
     List<CarInfo> getCarsByLocation(String location);
 
+
+    List<CarInfo> getCarsByUserLocation(String id);
 }

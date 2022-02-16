@@ -10,6 +10,4 @@ public interface CustomerService {
 
     List<Customer> getAllCustomer();
 
-    List<Customer> getCustomerById(String Id);
-
 }

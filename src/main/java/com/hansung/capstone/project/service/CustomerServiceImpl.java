@@ -17,7 +17,7 @@ public class CustomerServiceImpl implements CustomerService{
 
     @Override
     public List<Customer> getAllCustomer() {
-        List<Customer> results = new ArrayList<Customer>();
+        List<Customer> results = new ArrayList();
 
         List<Customer> list = customerRepository.findAll();
 
@@ -35,8 +35,4 @@ public class CustomerServiceImpl implements CustomerService{
         return results;
     }
 
-    @Override
-    public List<Customer> getCustomerById(String Id) {
-        return null;
-    }
 }
