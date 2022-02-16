@@ -1,6 +1,7 @@
 package com.hansung.capstone.project.controller;
 
 import com.hansung.capstone.project.model.network.RentInfo;
+import com.hansung.capstone.project.model.network.response.RentInfoResponse;
 import com.hansung.capstone.project.service.RentService;
 import com.hansung.capstone.project.util.Header;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,9 +20,9 @@ public class RentController {
     private RentService rentService;
 
     @GetMapping("/getRentInfoByUserId")
-    private Header<List<RentInfo>> getRentInfosByUserId(@RequestParam String id){
+    private Header<List<RentInfoResponse>> getRentInfosByUserId(@RequestParam String id){
         try{
-            List<RentInfo> results = rentService.getRentInfoByUserId(id);
+            List<RentInfoResponse> results = rentService.getRentInfoByUserId(id);
 
             return Header.SUCCESS(results.size(), results);
 
@@ -29,5 +30,18 @@ public class RentController {
            return Header.FAIL();
         }
     }
+
+    @GetMapping("/getPastRentInfoByUserId")
+    private Header<List<RentInfoResponse>> getPastRentInfosByUserId(@RequestParam String id){
+        try{
+            List<RentInfoResponse> results = rentService.getPastRentInfoByUserId(id);
+
+            return Header.SUCCESS(results.size(), results);
+
+        }catch (Exception e){
+            return Header.FAIL();
+        }
+    }
+
 
 }
