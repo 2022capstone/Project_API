@@ -12,6 +12,7 @@ public interface CarService {
 
     List<CarInfoResponse> getCarsByLocation(String location);
 
-
     List<CarInfoResponse> getCarsByUserLocation(String id);
+
+    Car insertCarInfo(Car car);
 }

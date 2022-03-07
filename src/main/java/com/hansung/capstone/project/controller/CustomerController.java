@@ -11,13 +11,13 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/customer")
+@RequestMapping("/customerlist")
 public class CustomerController {
 
     @Autowired
     private CustomerServiceImpl customerService;
 
-    @GetMapping("/getCustomersAll")
+    @GetMapping("/customers")
     public Header<List<Customer>> getAllCustomer(){
 
         try{

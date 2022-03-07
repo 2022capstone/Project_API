@@ -106,4 +106,9 @@ public class RentServiceImpl implements RentService {
     }
 
 
+    @Override
+    public Rent insertRentInfo(Rent rent){
+        return rentRepository.save(rent);
+    }
+
 }

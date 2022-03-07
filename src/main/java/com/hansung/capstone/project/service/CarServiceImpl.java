@@ -82,4 +82,9 @@ public class CarServiceImpl implements CarService{
         return results;
 
     }
+
+    @Override
+    public Car insertCarInfo(Car car) {
+        return carRepository.save(car);
+    }
 }
