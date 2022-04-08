@@ -11,6 +11,7 @@ public interface RentRepository extends JpaRepository<Rent, Integer> {
     @Query(value = "SELECT * FROM rent WHERE Customer_info_id = :id", nativeQuery = true)
     List<Rent> findRentsByRenterId(String id);
 
-
+    @Query(value = "SELECT * FROM rent WHERE Customer_info_id = :id and rent_status = :status",nativeQuery = true)
+    List<Rent> findRentByRenterIdAndStatus(String id, String status);
 
 }

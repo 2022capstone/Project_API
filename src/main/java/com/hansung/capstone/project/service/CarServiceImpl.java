@@ -2,10 +2,12 @@ package com.hansung.capstone.project.service;
 
 
 import com.hansung.capstone.project.model.Car;
+import com.hansung.capstone.project.model.Rent;
 import com.hansung.capstone.project.model.network.CarInfo;
 import com.hansung.capstone.project.model.network.response.CarInfoResponse;
 import com.hansung.capstone.project.repository.CarRepository;
 import com.hansung.capstone.project.repository.CustomerRepository;
+import com.hansung.capstone.project.repository.RentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,10 +24,13 @@ public class CarServiceImpl implements CarService{
     @Autowired
     private CustomerRepository customerRepository;
 
+    @Autowired
+    private RentRepository rentRepository;
+
 
     @Override
-    public List<CarInfoResponse> getCarsByLocation(String location) {
-        List<CarInfoResponse> results = new ArrayList();
+    public CarInfoResponse getCarsByLocation(String location) {
+
         List<Car> carList = carRepository.findCarByLocation(location);
         List<CarInfo> carInfoList = new ArrayList();
 
@@ -44,19 +49,20 @@ public class CarServiceImpl implements CarService{
             }
         }
 
-        results.add(CarInfoResponse.builder()
-                .carInfo(carInfoList)
-                .build());
 
-        return results;
+        CarInfoResponse result = CarInfoResponse.builder()
+                .carInfo(carInfoList)
+                .build();
+
+        return result;
     }
 
 
     @Override
-    public List<CarInfoResponse> getCarsByUserLocation(String id) {
+    public CarInfoResponse getCarsByUserLocation(String id) {
         String userLocation = customerRepository.findLocationById(id);
 
-        List<CarInfoResponse> results = new ArrayList();
+
         List<Car> carList = carRepository.findCarByLocation(userLocation);
         List<CarInfo> carInfoList = new ArrayList();
 
@@ -75,16 +81,78 @@ public class CarServiceImpl implements CarService{
             }
         }
 
-        results.add(CarInfoResponse.builder()
-                .carInfo(carInfoList)
-                .build());
 
-        return results;
+        CarInfoResponse result = CarInfoResponse.builder()
+                .carInfo(carInfoList)
+                .build();
+
+        return result;
 
     }
+
+    @Override
+    public CarInfoResponse getCarsByUserReservation(String id, String status) {
+
+
+        List<CarInfo> carInfoList = new ArrayList();
+        List<Rent> rentList = rentRepository.findRentByRenterIdAndStatus(id, status);
+
+        for (Rent rent : rentList){
+            Car car = carRepository.findCarByNumber(rent.getCarNum());
+
+            carInfoList.add(CarInfo.builder()
+                    .ownerId(car.getOwnerId())
+                    .availableTime(car.getAvailableTime())
+                    .model(car.getModel())
+                    .number(car.getNumber())
+                    .maxPeople(car.getMaxPeople())
+                    .imageURL(car.getImageURL())
+                    .location(car.getLocation())
+                    .build());
+        }
+
+
+        CarInfoResponse result = CarInfoResponse.builder()
+                .carInfo(carInfoList)
+                .build();
+
+        return result;
+    }
+
+    @Override
+    public CarInfoResponse getCarsById(String id) {
+
+        List<CarInfo> carInfoList = new ArrayList();
+        List<Car> carList = carRepository.findCarByOwnerId(id);
+
+        for(Car car : carList){
+            carInfoList.add(
+                    CarInfo.builder()
+                            .model(car.getModel())
+                            .location(car.getLocation())
+                            .number(car.getNumber())
+                            .maxPeople(car.getMaxPeople())
+                            .imageURL(car.getImageURL())
+                            .ownerId(car.getOwnerId())
+                            .availableTime(car.getAvailableTime())
+                            .build()
+            );
+        }
+
+        CarInfoResponse result = CarInfoResponse.builder()
+                .carInfo(carInfoList)
+                .build();
+
+        return result;
+    }
+
 
     @Override
     public Car insertCarInfo(Car car) {
         return carRepository.save(car);
     }
+
+
+
+
 }

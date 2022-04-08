@@ -14,5 +14,6 @@ public interface CarRepository extends JpaRepository<Car, String> {
     @Query(value = "SELECT * From car_info WHERE car_num = :carNum", nativeQuery = true)
     Car findCarByNumber(String carNum);
 
+    List<Car> findCarByOwnerId(String id);
 
 }

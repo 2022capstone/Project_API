@@ -4,6 +4,7 @@ import com.hansung.capstone.project.model.Car;
 import com.hansung.capstone.project.model.Rent;
 import com.hansung.capstone.project.model.network.CarInfo;
 import com.hansung.capstone.project.model.network.RentInfo;
+import com.hansung.capstone.project.model.network.response.CarInfoResponse;
 import com.hansung.capstone.project.model.network.response.RentInfoResponse;
 import com.hansung.capstone.project.repository.CarRepository;
 import com.hansung.capstone.project.repository.RentRepository;
@@ -104,6 +105,7 @@ public class RentServiceImpl implements RentService {
 
         return results;
     }
+
 
 
     @Override

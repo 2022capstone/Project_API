@@ -18,12 +18,12 @@ public class CarController {
     private CarService carService;
 
     @GetMapping("/car-location")
-    private Header<List<CarInfoResponse>> getCarsByLocation(@RequestParam String location){
+    private Header<CarInfoResponse> getCarsByLocation(@RequestParam String location){
 
         try{
-            List<CarInfoResponse> carInfoList = carService.getCarsByLocation(location);
+            CarInfoResponse carInfoResponse = carService.getCarsByLocation(location);
 
-            return Header.SUCCESS(carInfoList.size(), carInfoList);
+            return Header.SUCCESS(carInfoResponse.getCarInfo().size(), carInfoResponse);
 
         }catch (Exception e){
             return Header.FAIL();
@@ -32,15 +32,39 @@ public class CarController {
     }
 
     @GetMapping("/car-userlocation")
-    private Header<List<CarInfoResponse>> getCarsByUserLocation(@RequestParam String id){
+    private Header<CarInfoResponse> getCarsByUserLocation(@RequestParam String id){
         try{
-            List<CarInfoResponse> carInfoList = carService.getCarsByUserLocation(id);
+            CarInfoResponse carInfoResponse = carService.getCarsByUserLocation(id);
 
-            return Header.SUCCESS(carInfoList.size(), carInfoList);
+            return Header.SUCCESS(carInfoResponse.getCarInfo().size(), carInfoResponse);
 
         }catch(Exception e){
             return Header.FAIL();
         }
+    }
+
+    @GetMapping("/car-rent-status")
+    private Header<CarInfoResponse> getCarsByUserAndRentStatus(@RequestParam String id, @RequestParam String status){
+        try {
+            CarInfoResponse carInfoResponse = carService.getCarsByUserReservation(id, status);
+            return Header.SUCCESS(carInfoResponse.getCarInfo().size(), carInfoResponse);
+
+        }catch(Exception e){
+            return Header.FAIL();
+        }
+
+    }
+
+    @GetMapping("/my-car-list/{id}")
+    private Header<CarInfoResponse> getCarsByUserId(@PathVariable String id){
+        try {
+            CarInfoResponse carInfoResponse = carService.getCarsById(id);
+            return Header.SUCCESS(carInfoResponse.getCarInfo().size(), carInfoResponse);
+
+        }catch (Exception e){
+            return Header.FAIL();
+        }
+
     }
 
     @PostMapping("/car")
