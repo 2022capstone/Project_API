@@ -25,6 +25,8 @@ public class CarInfo {
 
     private String imageURL;
 
+    private String availableStatus;
+
     private LocalDateTime availableTime;
 
     private String ownerId;

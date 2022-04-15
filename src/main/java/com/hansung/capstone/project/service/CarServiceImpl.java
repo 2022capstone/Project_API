@@ -43,6 +43,7 @@ public class CarServiceImpl implements CarService{
                                 .imageURL(car.getImageURL())
                                 .number(car.getNumber())
                                 .model(car.getModel())
+                                .availableStatus(car.getAvailableStatus())
                                 .availableTime(car.getAvailableTime())
                                 .ownerId(car.getOwnerId())
                                 .build());
@@ -75,6 +76,7 @@ public class CarServiceImpl implements CarService{
                                 .imageURL(car.getImageURL())
                                 .number(car.getNumber())
                                 .model(car.getModel())
+                                .availableStatus(car.getAvailableStatus())
                                 .availableTime(car.getAvailableTime())
                                 .ownerId(car.getOwnerId())
                                 .build());
@@ -105,6 +107,7 @@ public class CarServiceImpl implements CarService{
                     .availableTime(car.getAvailableTime())
                     .model(car.getModel())
                     .number(car.getNumber())
+                    .availableStatus(car.getAvailableStatus())
                     .maxPeople(car.getMaxPeople())
                     .imageURL(car.getImageURL())
                     .location(car.getLocation())
@@ -131,6 +134,7 @@ public class CarServiceImpl implements CarService{
                             .model(car.getModel())
                             .location(car.getLocation())
                             .number(car.getNumber())
+                            .availableStatus(car.getAvailableStatus())
                             .maxPeople(car.getMaxPeople())
                             .imageURL(car.getImageURL())
                             .ownerId(car.getOwnerId())

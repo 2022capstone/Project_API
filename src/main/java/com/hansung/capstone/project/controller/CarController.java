@@ -5,10 +5,16 @@ import com.hansung.capstone.project.model.network.CarInfo;
 import com.hansung.capstone.project.model.network.response.CarInfoResponse;
 import com.hansung.capstone.project.service.CarService;
 import com.hansung.capstone.project.util.Header;
+import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.print.attribute.standard.Media;
+import java.awt.*;
 import java.util.List;
+import java.util.logging.Logger;
 
 @RestController
 @RequestMapping("/carlist")
@@ -67,8 +73,13 @@ public class CarController {
 
     }
 
-    @PostMapping("/car")
-    private Car insertCar(@RequestBody Car request){
+    @PostMapping(value = "/car", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
+    private Car insertCar(@RequestParam CarInfo request, @RequestParam MultipartFile image){
+
+        CarInfo car = CarInfo.builder()
+                .model(request.getModel())
+                .build();
+        /*
         Car car = Car.builder()
                 .availableStatus(request.getAvailableStatus())
                 .model(request.getModel())
@@ -80,6 +91,9 @@ public class CarController {
                 .build();
 
         return carService.insertCarInfo(car);
+        */
+        return null;
     }
+
 
 }

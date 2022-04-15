@@ -25,14 +25,13 @@ public class RentServiceImpl implements RentService {
     private CarRepository carRepository;
 
     @Override
-    public List<RentInfoResponse> getRentInfoByUserId(String id) {
-        List<RentInfoResponse> results = new ArrayList();
+    public RentInfoResponse getRentInfoByRenterId(String id) {
+
 
         List<Rent> rentList = rentRepository.findRentsByRenterId(id);
         List<RentInfo> rentInfoList = new ArrayList();
 
         for (Rent rent : rentList) {
-            if (!(rent.getStatus().equals("rent completed"))){
                 Car car = carRepository.findCarByNumber(rent.getCarNum());
 
                 rentInfoList.add(RentInfo.builder()
@@ -54,29 +53,26 @@ public class RentServiceImpl implements RentService {
                         .startTime(rent.getStartTime())
                         .status(rent.getStatus())
                         .build());
-            }
-        }
 
-        results.add(
-                RentInfoResponse.builder()
-                        .rentInfo(rentInfoList)
-                        .build());
+        }
+        RentInfoResponse results = RentInfoResponse.builder()
+                .rentInfo(rentInfoList)
+                .build();
 
         return results;
     }
 
     @Override
-    public List<RentInfoResponse> getPastRentInfoByUserId(String id) {
+    public RentInfoResponse getRentInfoByOwnerId(String id) {
 
-        List<RentInfoResponse> results = new ArrayList();
-
-        List<Rent> rentList = rentRepository.findRentsByRenterId(id);
         List<RentInfo> rentInfoList = new ArrayList();
 
-        for (Rent rent : rentList) {
-            if (rent.getStatus().equals("rent completed") ) {
-                Car car = carRepository.findCarByNumber(rent.getCarNum());
+        List<Car> carList = carRepository.findCarByOwnerId(id);
 
+        for (Car car : carList){
+            List<Rent> rentList = rentRepository.findRentsByCarNum(car.getNumber());
+
+            for (Rent rent : rentList){
                 rentInfoList.add(RentInfo.builder()
                         .carInfo(
                                 CarInfo.builder()
@@ -97,11 +93,12 @@ public class RentServiceImpl implements RentService {
                         .status(rent.getStatus())
                         .build());
             }
+
         }
 
-        results.add(RentInfoResponse.builder()
-                        .rentInfo(rentInfoList)
-                .build());
+        RentInfoResponse results = RentInfoResponse.builder()
+                .rentInfo(rentInfoList)
+                .build();
 
         return results;
     }

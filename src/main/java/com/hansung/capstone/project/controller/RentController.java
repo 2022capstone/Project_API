@@ -17,24 +17,24 @@ public class RentController {
     @Autowired
     private RentService rentService;
 
-    @GetMapping("/rent-current")
-    private Header<List<RentInfoResponse>> getRentInfosByUserId(@RequestParam String id){
+    @GetMapping("/rent-renter-id")
+    private Header<RentInfoResponse> getRentInfosByRenterId(@RequestParam String id){
         try{
-            List<RentInfoResponse> results = rentService.getRentInfoByUserId(id);
+            RentInfoResponse results = rentService.getRentInfoByRenterId(id);
 
-            return Header.SUCCESS(results.size(), results);
+            return Header.SUCCESS(results.getRentInfo().size(), results);
 
         }catch (Exception e){
            return Header.FAIL();
         }
     }
 
-    @GetMapping("/rent-past")
-    private Header<List<RentInfoResponse>> getPastRentInfosByUserId(@RequestParam String id){
+    @GetMapping("/rent-owner-id")
+    private Header<RentInfoResponse> getPastRentInfosByUserId(@RequestParam String id){
         try{
-            List<RentInfoResponse> results = rentService.getPastRentInfoByUserId(id);
+            RentInfoResponse results = rentService.getRentInfoByOwnerId(id);
 
-            return Header.SUCCESS(results.size(), results);
+            return Header.SUCCESS(results.getRentInfo().size(), results);
 
         }catch (Exception e){
             return Header.FAIL();

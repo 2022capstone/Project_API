@@ -10,9 +10,9 @@ import java.util.List;
 
 public interface RentService {
 
-    List<RentInfoResponse> getRentInfoByUserId(String id);
+    RentInfoResponse getRentInfoByRenterId(String id);
 
-    List<RentInfoResponse> getPastRentInfoByUserId(String id);
+    RentInfoResponse getRentInfoByOwnerId(String id);
 
     Rent insertRentInfo(Rent rent);
 
