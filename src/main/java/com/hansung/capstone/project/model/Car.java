@@ -37,8 +37,11 @@ public class Car {
     @Column(name = "rent_available_status")
     private String availableStatus;
 
-    @Column(name = "rent_available_time")
-    private LocalDateTime availableTime;
+    @Column(name = "rent_available_start_time")
+    private LocalDateTime availableStartTime;
+
+    @Column(name = "rent_available_end_time")
+    private LocalDateTime availableEndTime;
 
     @Column(name = "Customer_info_id")
     private String ownerId;

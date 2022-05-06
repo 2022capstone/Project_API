@@ -22,10 +22,13 @@ public class RentController {
         try{
             RentInfoResponse results = rentService.getRentInfoByRenterId(id);
 
+
+            System.out.println(results.toString());
             return Header.SUCCESS(results.getRentInfo().size(), results);
 
         }catch (Exception e){
-           return Header.FAIL();
+            System.out.println(e.getMessage());
+           return Header.FAIL(e);
         }
     }
 
@@ -37,23 +40,38 @@ public class RentController {
             return Header.SUCCESS(results.getRentInfo().size(), results);
 
         }catch (Exception e){
-            return Header.FAIL();
+            return Header.FAIL(e);
         }
     }
 
     @PostMapping("/rent")
-    private Rent insertRentInfo(@RequestBody Rent request){
-        Rent rent = Rent.builder()
-                .carNum(request.getCarNum())
-                .comment(request.getComment())
-                .grade(request.getGrade())
-                .status(request.getStatus())
-                .renterId(request.getRenterId())
-                .returnTime(request.getReturnTime())
-                .startTime(request.getStartTime())
-                .build();
+    private Header<Rent> insertRentInfo(@RequestBody Rent request){
+        try{
+            System.out.println(request.toString());
 
-        return rentService.insertRentInfo(rent);
+            Rent result = rentService.insertRentInfo(request);
+
+            try{
+                return Header.SUCCESS(1, result);
+            }catch(Exception e2){
+                return Header.FAIL(e2);
+            }
+
+        }catch (Exception e){
+            return Header.FAIL(e);
+        }
     }
+
+    @PutMapping("/rent")
+    private Header<Rent> updateRentInfo(@RequestBody Rent request){
+        try{
+            Rent result = rentService.updateRentInfo(request);
+            return Header.SUCCESS(1, result);
+        }catch (Exception e){
+            return Header.FAIL(e);
+        }
+
+    }
+
 
 }

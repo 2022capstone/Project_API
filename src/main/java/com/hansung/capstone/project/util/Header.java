@@ -15,6 +15,7 @@ public class Header<T> {
     private String resultMsg; // SUCCESS, FAIL
     private int totalCount; // 데이터 갯수
     private T list;
+    private String error;
 
     public static <T> Header<T> SUCCESS(int totalCount, T list){
         return (Header<T>) Header.builder()
@@ -24,9 +25,10 @@ public class Header<T> {
             .build();
     }
 
-    public static <T> Header<T> FAIL(){
+    public static <T> Header<T> FAIL(Exception e){
         return (Header<T>) Header.builder()
                 .resultMsg("FAIL")
+                .error(e.getMessage())
                 .build();
     }
 }

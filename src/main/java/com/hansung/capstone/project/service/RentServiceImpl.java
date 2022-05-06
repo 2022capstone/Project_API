@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 @Service
 public class RentServiceImpl implements RentService {
@@ -31,6 +32,8 @@ public class RentServiceImpl implements RentService {
         List<Rent> rentList = rentRepository.findRentsByRenterId(id);
         List<RentInfo> rentInfoList = new ArrayList();
 
+
+
         for (Rent rent : rentList) {
                 Car car = carRepository.findCarByNumber(rent.getCarNum());
 
@@ -38,7 +41,8 @@ public class RentServiceImpl implements RentService {
                         .carInfo(
                                 CarInfo.builder()
                                         .ownerId(car.getOwnerId())
-                                        .availableTime(car.getAvailableTime())
+                                        .availableStartTime(car.getAvailableStartTime())
+                                        .availableEndTime(car.getAvailableEndTime())
                                         .model(car.getModel())
                                         .number(car.getNumber())
                                         .imageURL(car.getImageURL())
@@ -77,7 +81,9 @@ public class RentServiceImpl implements RentService {
                         .carInfo(
                                 CarInfo.builder()
                                         .ownerId(car.getOwnerId())
-                                        .availableTime(car.getAvailableTime())
+                                        .availableStartTime(car.getAvailableStartTime())
+                                        .availableEndTime(car.getAvailableEndTime())
+                                        .availableStatus(car.getAvailableStatus())
                                         .model(car.getModel())
                                         .number(car.getNumber())
                                         .imageURL(car.getImageURL())
@@ -107,7 +113,47 @@ public class RentServiceImpl implements RentService {
 
     @Override
     public Rent insertRentInfo(Rent rent){
-        return rentRepository.save(rent);
+
+        List<Rent> rentList = rentRepository.findRentsByRenterId(rent.getRenterId());
+        Boolean flag = true;
+
+        for(Rent rentHistory : rentList){
+            if (rentHistory.getStatus() == "2" || rentHistory.getStatus() == "3" || rentHistory.getStatus() == "4" || rentHistory.getStatus() == "5" || rentHistory.getStatus() == "6"){
+                flag = false;
+            }
+        }
+
+        if(flag){
+            return rentRepository.save(rent);
+
+
+        }else{
+            return null;
+        }
+
+    }
+
+
+    @Override
+    public Rent updateRentInfo(Rent rent){
+        Optional<Rent> rentInfo = rentRepository.findById(rent.getId());
+
+        if(rentInfo.isPresent()){
+            Rent newRentInfo = rentInfo.get();
+            newRentInfo.setCarNum(rent.getCarNum());
+            newRentInfo.setGrade(rent.getGrade());
+            newRentInfo.setRenterId(rent.getRenterId());
+            newRentInfo.setReturnTime(rent.getReturnTime());
+            newRentInfo.setStartTime(rent.getStartTime());
+            newRentInfo.setComment(rent.getComment());
+            newRentInfo.setGrade(rent.getGrade());
+
+            return rentRepository.save(newRentInfo);
+        } else{
+            return null;
+        }
+
+
     }
 
 }

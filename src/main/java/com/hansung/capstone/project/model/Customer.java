@@ -34,7 +34,7 @@ public class Customer {
     private String address;
 
     @Column(name = "license_num")
-    private int licenseNum;
+    private String licenseNum;
 
     @Column(name = "grade_avg")
     private float gradeAvg;

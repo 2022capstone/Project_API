@@ -16,4 +16,5 @@ public interface RentRepository extends JpaRepository<Rent, Integer> {
 
     List<Rent> findRentsByCarNum(String carNum);
 
+
 }

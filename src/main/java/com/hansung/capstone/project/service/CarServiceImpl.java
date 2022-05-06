@@ -8,9 +8,12 @@ import com.hansung.capstone.project.model.network.response.CarInfoResponse;
 import com.hansung.capstone.project.repository.CarRepository;
 import com.hansung.capstone.project.repository.CustomerRepository;
 import com.hansung.capstone.project.repository.RentRepository;
+import com.hansung.capstone.project.util.ImageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -44,7 +47,8 @@ public class CarServiceImpl implements CarService{
                                 .number(car.getNumber())
                                 .model(car.getModel())
                                 .availableStatus(car.getAvailableStatus())
-                                .availableTime(car.getAvailableTime())
+                                .availableStartTime(car.getAvailableStartTime())
+                                .availableEndTime(car.getAvailableEndTime())
                                 .ownerId(car.getOwnerId())
                                 .build());
             }
@@ -65,10 +69,11 @@ public class CarServiceImpl implements CarService{
 
 
         List<Car> carList = carRepository.findCarByLocation(userLocation);
+
         List<CarInfo> carInfoList = new ArrayList();
 
         for (Car car : carList){
-            if (car.getAvailableStatus().equals("y")){
+            if (car.getAvailableStatus().equals("y") && !(car.getOwnerId().equals(id))){
                 carInfoList.add(
                         CarInfo.builder()
                                 .maxPeople(car.getMaxPeople())
@@ -77,7 +82,8 @@ public class CarServiceImpl implements CarService{
                                 .number(car.getNumber())
                                 .model(car.getModel())
                                 .availableStatus(car.getAvailableStatus())
-                                .availableTime(car.getAvailableTime())
+                                .availableStartTime(car.getAvailableStartTime())
+                                .availableEndTime(car.getAvailableEndTime())
                                 .ownerId(car.getOwnerId())
                                 .build());
             }
@@ -104,7 +110,8 @@ public class CarServiceImpl implements CarService{
 
             carInfoList.add(CarInfo.builder()
                     .ownerId(car.getOwnerId())
-                    .availableTime(car.getAvailableTime())
+                    .availableStartTime(car.getAvailableStartTime())
+                    .availableEndTime(car.getAvailableEndTime())
                     .model(car.getModel())
                     .number(car.getNumber())
                     .availableStatus(car.getAvailableStatus())
@@ -122,6 +129,8 @@ public class CarServiceImpl implements CarService{
         return result;
     }
 
+
+
     @Override
     public CarInfoResponse getCarsById(String id) {
 
@@ -138,7 +147,8 @@ public class CarServiceImpl implements CarService{
                             .maxPeople(car.getMaxPeople())
                             .imageURL(car.getImageURL())
                             .ownerId(car.getOwnerId())
-                            .availableTime(car.getAvailableTime())
+                            .availableStartTime(car.getAvailableStartTime())
+                            .availableEndTime(car.getAvailableEndTime())
                             .build()
             );
         }
@@ -151,11 +161,84 @@ public class CarServiceImpl implements CarService{
     }
 
 
+
+
+
+
     @Override
-    public Car insertCarInfo(Car car) {
-        return carRepository.save(car);
+    public CarInfoResponse insertCarInfo(CarInfo carInfo) {
+
+        try{
+            ImageUtil.saveFile(carInfo.getImageURL(), "/profile/" + carInfo.getOwnerId() + "/", carInfo.getModel() + ".png");
+
+            String imageURL = ImageUtil.API_BASE_URL + "profile/" + carInfo.getModel() + ".png";
+            Car car = Car.builder()
+                    .number(carInfo.getNumber())
+                    .model(carInfo.getModel())
+                    .location(carInfo.getLocation())
+                    .maxPeople(carInfo.getMaxPeople())
+                    .availableStartTime(carInfo.getAvailableStartTime())
+                    .availableEndTime(carInfo.getAvailableEndTime())
+                    .ownerId(carInfo.getOwnerId())
+                    .imageURL(imageURL)
+                    .build();
+
+            carRepository.save(car);
+
+            List<CarInfo> carInfoList = new ArrayList();
+            carInfoList.add(carInfo);
+
+            return CarInfoResponse.builder()
+                    .carInfo(carInfoList)
+                    .build();
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        return null;
     }
 
+
+    @Override
+    public CarInfoResponse updateCarInfo(CarInfo carInfo) {
+
+        try{
+            Optional<Car> car = carRepository.findById(carInfo.getNumber());
+
+            if(car.isPresent()){
+                Car data = car.get();
+
+                ImageUtil.saveFile(carInfo.getImageURL(), "/profile/" + carInfo.getOwnerId() + "/", carInfo.getModel() + ".png");
+
+                String imageURL = ImageUtil.API_BASE_URL + "profile/" + carInfo.getModel() + ".png";
+
+                data.setModel(carInfo.getModel());
+                data.setLocation(carInfo.getLocation());
+                data.setAvailableEndTime(carInfo.getAvailableEndTime());
+                data.setImageURL(imageURL);
+                data.setAvailableStatus(carInfo.getAvailableStatus());
+                data.setMaxPeople(carInfo.getMaxPeople());
+                data.setNumber(carInfo.getNumber());
+                data.setAvailableStartTime(carInfo.getAvailableStartTime());
+                data.setOwnerId(carInfo.getOwnerId());
+
+                carRepository.save(data);
+
+                List<CarInfo> carInfoList = new ArrayList();
+                carInfoList.add(carInfo);
+
+                return CarInfoResponse.builder()
+                        .carInfo(carInfoList)
+                        .build();
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+
+        return null;
+
+    }
 
 
 

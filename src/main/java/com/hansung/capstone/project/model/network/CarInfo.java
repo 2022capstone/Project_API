@@ -27,7 +27,9 @@ public class CarInfo {
 
     private String availableStatus;
 
-    private LocalDateTime availableTime;
+    private LocalDateTime availableStartTime;
+
+    private LocalDateTime availableEndTime;
 
     private String ownerId;
 

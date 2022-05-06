@@ -12,8 +12,10 @@ import java.util.List;
 @Repository
 public interface CustomerRepository extends JpaRepository<Customer, String> {
 
-    //List<Customer> findCustomerById(String Id);
+    Customer findCustomerById(String Id);
 
-     @Query(value = "SELECT address FROM customer_info WHERE id = :id", nativeQuery = true)
-     String findLocationById(String id);
+    @Query(value = "SELECT address FROM customer_info WHERE id = :id", nativeQuery = true)
+    String findLocationById(String id);
+
+
 }

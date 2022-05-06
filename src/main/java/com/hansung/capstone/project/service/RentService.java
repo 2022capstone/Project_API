@@ -16,4 +16,8 @@ public interface RentService {
 
     Rent insertRentInfo(Rent rent);
 
+    Rent updateRentInfo(Rent rent);
+
+
+
 }

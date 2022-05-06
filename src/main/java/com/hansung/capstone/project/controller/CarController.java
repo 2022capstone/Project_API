@@ -32,7 +32,7 @@ public class CarController {
             return Header.SUCCESS(carInfoResponse.getCarInfo().size(), carInfoResponse);
 
         }catch (Exception e){
-            return Header.FAIL();
+            return Header.FAIL(e);
         }
 
     }
@@ -45,7 +45,7 @@ public class CarController {
             return Header.SUCCESS(carInfoResponse.getCarInfo().size(), carInfoResponse);
 
         }catch(Exception e){
-            return Header.FAIL();
+            return Header.FAIL(e);
         }
     }
 
@@ -56,7 +56,7 @@ public class CarController {
             return Header.SUCCESS(carInfoResponse.getCarInfo().size(), carInfoResponse);
 
         }catch(Exception e){
-            return Header.FAIL();
+            return Header.FAIL(e);
         }
 
     }
@@ -68,31 +68,31 @@ public class CarController {
             return Header.SUCCESS(carInfoResponse.getCarInfo().size(), carInfoResponse);
 
         }catch (Exception e){
-            return Header.FAIL();
+            return Header.FAIL(e);
         }
 
     }
 
-    @PostMapping(value = "/car", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
-    private Car insertCar(@RequestParam CarInfo request, @RequestParam MultipartFile image){
+    @PostMapping(value = "/car", consumes = {MediaType.APPLICATION_JSON_VALUE})
+    private Header<CarInfoResponse> insertCar(@RequestBody CarInfo request){
 
-        CarInfo car = CarInfo.builder()
-                .model(request.getModel())
-                .build();
-        /*
-        Car car = Car.builder()
-                .availableStatus(request.getAvailableStatus())
-                .model(request.getModel())
-                .maxPeople(request.getMaxPeople())
-                .availableTime(request.getAvailableTime())
-                .ownerId(request.getOwnerId())
-                .number(request.getNumber())
-                .imageURL(request.getImageURL())
-                .build();
+        try{
+            CarInfoResponse carInfoResponse = carService.insertCarInfo(request);
+            return Header.SUCCESS(carInfoResponse.getCarInfo().size(), carInfoResponse);
+        }catch (Exception e){
+            return Header.FAIL(e);
+        }
 
-        return carService.insertCarInfo(car);
-        */
-        return null;
+    }
+
+    @PutMapping(value = "/car", consumes = {MediaType.APPLICATION_JSON_VALUE})
+    private Header<CarInfoResponse> updateCar(@RequestBody CarInfo request){
+        try{
+            CarInfoResponse carInfoResponse = carService.updateCarInfo(request);
+            return Header.SUCCESS(carInfoResponse.getCarInfo().size(), carInfoResponse);
+        }catch (Exception e){
+            return Header.FAIL(e);
+        }
     }
 
 
