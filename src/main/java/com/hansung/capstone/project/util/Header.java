@@ -24,7 +24,6 @@ public class Header<T> {
             .list(list)
             .build();
     }
-
     public static <T> Header<T> FAIL(Exception e){
         return (Header<T>) Header.builder()
                 .resultMsg("FAIL")

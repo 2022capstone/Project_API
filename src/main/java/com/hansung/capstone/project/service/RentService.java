@@ -6,8 +6,6 @@ import com.hansung.capstone.project.model.network.RentInfo;
 import com.hansung.capstone.project.model.network.response.CarInfoResponse;
 import com.hansung.capstone.project.model.network.response.RentInfoResponse;
 
-import java.util.List;
-
 public interface RentService {
 
     RentInfoResponse getRentInfoByRenterId(String id);
@@ -18,6 +16,6 @@ public interface RentService {
 
     Rent updateRentInfo(Rent rent);
 
-
+    int deleteRentInfo(int id);
 
 }

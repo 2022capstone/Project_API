@@ -14,6 +14,8 @@ import java.time.LocalDateTime;
 @Builder
 public class RentInfo {
 
+    private int rentId;
+
     private String renterId;
 
     private CarInfo carInfo;
@@ -28,4 +30,5 @@ public class RentInfo {
 
     private String comment;
 
+    private String detectDiv;
 }

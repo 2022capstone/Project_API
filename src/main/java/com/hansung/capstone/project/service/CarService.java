@@ -20,4 +20,5 @@ public interface CarService {
     CarInfoResponse getCarsByUserReservation(String id, String status);
 
     CarInfoResponse updateCarInfo(CarInfo carInfo);
+
 }

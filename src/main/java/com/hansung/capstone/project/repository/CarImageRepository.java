@@ -11,4 +11,6 @@ public interface CarImageRepository extends JpaRepository<CarImage, Integer> {
 
     CarImage findCarImageById(int id);
 
+
+
 }

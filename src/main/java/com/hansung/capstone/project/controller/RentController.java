@@ -6,6 +6,7 @@ import com.hansung.capstone.project.model.network.response.RentInfoResponse;
 import com.hansung.capstone.project.service.RentService;
 import com.hansung.capstone.project.util.Header;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.relational.core.sql.In;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -73,5 +74,15 @@ public class RentController {
 
     }
 
+    @DeleteMapping("/rent")
+    private Header<Integer> deleteRentInfoById(@RequestParam int id){
+        try{
+            int result = rentService.deleteRentInfo(id);
+            return Header.SUCCESS(1, result);
+        }catch (Exception e){
+            return Header.FAIL(e);
+        }
+
+    }
 
 }

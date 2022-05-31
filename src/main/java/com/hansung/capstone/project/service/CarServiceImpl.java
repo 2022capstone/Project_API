@@ -43,7 +43,8 @@ public class CarServiceImpl implements CarService{
                         CarInfo.builder()
                                 .maxPeople(car.getMaxPeople())
                                 .location(car.getLocation())
-                                .imageURL(car.getImageURL())
+                                .imageURL(ImageUtil.API_BASE_URL + car.getImageURL().substring(
+                                        car.getImageURL().indexOf("profile")))
                                 .number(car.getNumber())
                                 .model(car.getModel())
                                 .availableStatus(car.getAvailableStatus())
@@ -78,7 +79,8 @@ public class CarServiceImpl implements CarService{
                         CarInfo.builder()
                                 .maxPeople(car.getMaxPeople())
                                 .location(car.getLocation())
-                                .imageURL(car.getImageURL())
+                                .imageURL(ImageUtil.API_BASE_URL + car.getImageURL().substring(
+                                        car.getImageURL().indexOf("profile")))
                                 .number(car.getNumber())
                                 .model(car.getModel())
                                 .availableStatus(car.getAvailableStatus())
@@ -116,7 +118,8 @@ public class CarServiceImpl implements CarService{
                     .number(car.getNumber())
                     .availableStatus(car.getAvailableStatus())
                     .maxPeople(car.getMaxPeople())
-                    .imageURL(car.getImageURL())
+                    .imageURL(ImageUtil.API_BASE_URL + car.getImageURL().substring(
+                            car.getImageURL().indexOf("profile")))
                     .location(car.getLocation())
                     .build());
         }
@@ -145,7 +148,8 @@ public class CarServiceImpl implements CarService{
                             .number(car.getNumber())
                             .availableStatus(car.getAvailableStatus())
                             .maxPeople(car.getMaxPeople())
-                            .imageURL(car.getImageURL())
+                            .imageURL(ImageUtil.API_BASE_URL + car.getImageURL().substring(
+                                            car.getImageURL().indexOf("profile")))
                             .ownerId(car.getOwnerId())
                             .availableStartTime(car.getAvailableStartTime())
                             .availableEndTime(car.getAvailableEndTime())
@@ -169,14 +173,15 @@ public class CarServiceImpl implements CarService{
     public CarInfoResponse insertCarInfo(CarInfo carInfo) {
 
         try{
-            ImageUtil.saveFile(carInfo.getImageURL(), "/profile/" + carInfo.getOwnerId() + "/", carInfo.getModel() + ".png");
+            ImageUtil.saveFile(carInfo.getImageURL(), "/profile/" + carInfo.getOwnerId() + "/", carInfo.getNumber() + ".png");
 
-            String imageURL = ImageUtil.API_BASE_URL + "profile/" + carInfo.getModel() + ".png";
+            String imageURL = ImageUtil.API_BASE_URL + "profile/" + carInfo.getOwnerId() + "/"+ carInfo.getNumber() + ".png";
             Car car = Car.builder()
                     .number(carInfo.getNumber())
                     .model(carInfo.getModel())
                     .location(carInfo.getLocation())
                     .maxPeople(carInfo.getMaxPeople())
+                    .availableStatus(carInfo.getAvailableStatus())
                     .availableStartTime(carInfo.getAvailableStartTime())
                     .availableEndTime(carInfo.getAvailableEndTime())
                     .ownerId(carInfo.getOwnerId())
@@ -203,15 +208,16 @@ public class CarServiceImpl implements CarService{
     @Override
     public CarInfoResponse updateCarInfo(CarInfo carInfo) {
 
+        System.out.println(carInfo.toString());
         try{
             Optional<Car> car = carRepository.findById(carInfo.getNumber());
 
             if(car.isPresent()){
                 Car data = car.get();
 
-                ImageUtil.saveFile(carInfo.getImageURL(), "/profile/" + carInfo.getOwnerId() + "/", carInfo.getModel() + ".png");
+                //ImageUtil.saveFile(carInfo.getImageURL(), "/profile/" + carInfo.getOwnerId() + "/", carInfo.getModel() + ".png");
 
-                String imageURL = ImageUtil.API_BASE_URL + "profile/" + carInfo.getModel() + ".png";
+                String imageURL = ImageUtil.API_BASE_URL + "profile/" + carInfo.getOwnerId() + "/"+ carInfo.getNumber() + ".png";
 
                 data.setModel(carInfo.getModel());
                 data.setLocation(carInfo.getLocation());

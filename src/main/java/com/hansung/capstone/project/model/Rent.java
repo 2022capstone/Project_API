@@ -16,7 +16,7 @@ public class Rent {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "rent_id")
-    private int id;
+    private int rentId;
 
     @Column(name = "Customer_info_id")
     private String renterId;
@@ -38,4 +38,7 @@ public class Rent {
 
     @Column(name = "comment")
     private String comment;
+
+    @Column(name = "detect_div")
+    private String detectDiv;
 }
