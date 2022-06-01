@@ -135,7 +135,7 @@ public class RentServiceImpl implements RentService {
         Boolean flag = true;
 
         for(Rent rentHistory : rentList){
-            if (rentHistory.getStatus() == "2" || rentHistory.getStatus() == "3" || rentHistory.getStatus() == "4" || rentHistory.getStatus() == "5" || rentHistory.getStatus() == "6"){
+            if (rentHistory.getStatus().equals("2")  || rentHistory.getStatus().equals("3") || rentHistory.getStatus().equals("4") || rentHistory.getStatus().equals("5") || rentHistory.getStatus().equals("6")){
                 flag = false;
             }
         }
@@ -160,20 +160,36 @@ public class RentServiceImpl implements RentService {
 
             Rent newRentInfo = rentInfo.get();
 
-            if(newRentInfo.getStatus().equals("7")){
+            if(rent.getStatus().equals("7")){
                 List<Rent> rentList = rentRepository.findRentsByRenterId(newRentInfo.getRenterId());
                 float gradeAvg = 0;
 
                 for (Rent userRent : rentList){
                     gradeAvg += userRent.getGrade();
+                    System.out.println("grade : " +  gradeAvg);
                 }
 
-                gradeAvg += newRentInfo.getGrade();
+                gradeAvg += rent.getGrade();
                 gradeAvg /= rentList.size() + 1;
+
+                System.out.println("grade : " +  gradeAvg);
+
+                gradeAvg = (float)(Math.floor((gradeAvg * 10)) / 10.0);
 
                 Customer customer = customerRepository.findCustomerById(rent.getRenterId());
                 customer.setGradeAvg(gradeAvg);
                 customerRepository.save(customer);
+
+
+                Optional<Car> car = carRepository.findById(rent.getCarNum());
+                Car updateCar = car.get();
+                updateCar.setAvailableStatus("y");
+                carRepository.save(updateCar);
+            }else{
+                Optional<Car> car = carRepository.findById(rent.getCarNum());
+                Car updateCar = car.get();
+                updateCar.setAvailableStatus("r");
+                carRepository.save(updateCar);
             }
 
             newRentInfo.setCarNum(rent.getCarNum());

@@ -69,6 +69,8 @@ public class CarImageServiceImpl implements CarImageService{
         );
 
 
+        System.out.println("image : " +carImageInfo.toString());
+
         CarImageResponse result = CarImageResponse.builder()
                 .carImageInfo(carImageInfo)
                 .build();
@@ -140,6 +142,8 @@ public class CarImageServiceImpl implements CarImageService{
                             .rentId(carImage.getId())
                             .build()
             );
+
+            System.out.println("image : " +carImageInfo.toString());
 
             CarImageResponse result = CarImageResponse.builder()
                     .carImageInfo(carImageInfo)
@@ -252,6 +256,8 @@ public class CarImageServiceImpl implements CarImageService{
 
                 List<CarImageInfo> result = new ArrayList();
                 result.add(carImageInfo);
+
+
 
                 return CarImageResponse.builder()
                         .carImageInfo(result)

@@ -24,7 +24,7 @@ import java.util.Base64;
 public class ImageUtil {
 
     private final static String BASE_URL = "src/main/resources/images";
-    public final static String API_BASE_URL = "http://192.168.0.9:90/carsharing/images/";
+    public final static String API_BASE_URL = "http://192.168.45.147:90/carsharing/images/";
 
     public static void saveFile(String encodeFile, String path, String fileName) throws IOException{
 
